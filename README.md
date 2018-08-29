@@ -1,4 +1,4 @@
-This is a dockerfile to build FastDFS and Nginx image , also include shell script which is used to render config 
+   This is a dockerfile to build FastDFS and Nginx image , also include shell script which is used to render config 
 
 Q : What is FastDFS?
     It is an open source, lightweight distributed file system that manages files, including file storage, file synchronization, file access 
@@ -9,7 +9,7 @@ Q : what is Nginx?
     Nginx (engine x) is a high-performance HTTP and reverse proxy service and an IMAP/POP3/SMTP service. Nginx was developed by Igor 
 Sesoyev for the second-running Rambler.ru site in Russia (Russian: Рамблер)
 
-    We take the way to compile the source code to make the image , you can search and download the whole software packages in the official 
+   We take the way to compile the source code to make the image , you can search and download the whole software packages in the official 
 URL or other mirrors website:
 
 Nginx : http://nginx.org/en/download.html 
