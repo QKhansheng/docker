@@ -1,0 +1,36 @@
+FROM debian:latest
+
+ADD fastdfs-master.tar /usr/local
+ADD libfastcommon-master.tar /usr/local
+
+RUN apt-get update && apt-get install -y build-essential
+
+WORKDIR /usr/local/libfastcommon-master/
+
+RUN bash ./make.sh && bash ./make.sh install
+
+WORKDIR /usr/local/fastdfs-master/
+
+RUN bash ./make.sh && bash ./make.sh install
+
+COPY preproc.sh /usr/local
+COPY docker-entrypoint.sh /
+COPY supervisord.conf /usr/local
+
+ADD zlib-1.2.7.tar.gz /usr/local
+ADD pcre-8.21.tar.gz /usr/local
+ADD openssl-1.0.2j.tar.gz /usr/local
+ADD nginx_upstream_check_module-master.tar.gz /usr/local
+ADD nginx-http-concat-master.tar.gz /usr/local
+ADD nginx-1.8.1.tar.gz /usr/local
+ADD fastdfs-nginx-module-master.tar.gz /usr/local
+
+VOLUME ["/etc/fdfs" , "/data/fdfs/logs"]
+
+WORKDIR /usr/local/nginx-1.8.1/
+
+RUN chmod a+x /docker-entrypoint.sh && chmod a+x /usr/local/preproc.sh && apt-get install -y net-tools supervisor && ln -s /usr/local/supervisord.conf /etc/supervisor/conf.d/supervisord.conf && ./configure --prefix=/usr/local/nginx --with-pcre=/usr/local/pcre-8.21 --with-zlib=/usr/local/zlib-1.2.7 --with-openssl=/usr/local/openssl-1.0.2j --add-module=/usr/local/nginx-http-concat-master --add-module=/usr/local/nginx_upstream_check_module-master --add-module=/usr/local/fastdfs-nginx-module-master/src --with-http_ssl_module --with-http_realip_module && make && make install
+
+WORKDIR /
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
